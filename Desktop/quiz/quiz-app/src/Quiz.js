@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Quiz(props) {
 
   const [사용자답, set사용자답] = useState("");
   const [힌트, set힌트] = useState("");
+  const [피드백 , set피드백] = useState("");
 
+  useEffect(()=>{
+    console.log(피드백);
+  },[피드백]);
+
+  
   function 해당값저장(e) {
     set사용자답(e.target.value);
   }
@@ -28,6 +34,18 @@ function Quiz(props) {
 
   function 힌트함수(){
     set힌트(props.힌트)
+  }
+
+  function 피드백변경(e){
+    set피드백(e.target.value);
+    console.log(피드백);
+  }
+
+  function 피드백제출(){
+    const 저장된피드백들 = JSON.parse(localStorage.getItem("피드백들") || "[]");
+    저장된피드백들.push(피드백);
+    localStorage.setItem("피드백들",JSON.stringify(저장된피드백들));
+    set피드백(""); // 피드백 초기화
   }
 
   return (
@@ -57,6 +75,11 @@ function Quiz(props) {
 
         <div>실시간 점수판 : {props.점수} </div>
         <div>남은시간 : {props.타이머}초</div>
+
+        <div>
+          피드백 : <input type="text" value={피드백} onChange={피드백변경} />      
+          <button type='submit' onClick={피드백제출}>제출</button>
+        </div>
       </div>
     </div>
   )

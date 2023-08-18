@@ -19,6 +19,7 @@ function App() {
       무작위배열.push(값);
     }
     set무작위배열(무작위배열);
+
   }, [])
 
   useEffect(() => {
