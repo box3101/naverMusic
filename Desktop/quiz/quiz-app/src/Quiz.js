@@ -31,22 +31,25 @@ function Quiz(props) {
     } else {
     }
   }
-
   function 힌트함수(){
     set힌트(props.힌트)
   }
 
-  function 피드백변경(e){
-    set피드백(e.target.value);
-    console.log(피드백);
-  }
 
   function 피드백제출(){
-    const 저장된피드백들 = JSON.parse(localStorage.getItem("피드백들") || "[]");
-    저장된피드백들.push(피드백);
-    localStorage.setItem("피드백들",JSON.stringify(저장된피드백들));
-    set피드백(""); // 피드백 초기화
+    const 피드백값 = document.querySelector(".feedback-input").value;
+    const 저장된피드백 = localStorage.getItem("피드백");
+    const 피드백목록 = 저장된피드백 ? JSON.parse(저장된피드백) : [];
+    피드백목록.push(피드백값);
+    localStorage.setItem("피드백",JSON.stringify(피드백목록));
   }
+  
+  useEffect(()=>{
+    const 저장된피드백 = localStorage.getItem("피드백");
+    if(저장된피드백){
+      const 피드백목록 = JSON.parse(저장된피드백)
+    }
+  },[]);
 
   return (
     <div className="wrap">
@@ -77,8 +80,12 @@ function Quiz(props) {
         <div>남은시간 : {props.타이머}초</div>
 
         <div>
-          피드백 : <input type="text" value={피드백} onChange={피드백변경} />      
+          피드백 : <input type="text"  className="feedback-input"/>      
           <button type='submit' onClick={피드백제출}>제출</button>
+        </div>
+
+        <div>
+          피드백 내용 : {localStorage.getItem("피드백")}
         </div>
       </div>
     </div>
